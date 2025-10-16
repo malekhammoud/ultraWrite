@@ -1,0 +1,478 @@
+@import "tailwindcss";
+
+@layer theme {
+  :root {
+    /* Futuristic Cyber Theme - Light Mode */
+    --color-background: 240 10% 3.9%;
+    --color-foreground: 0 0% 98%;
+    --color-card: 240 10% 7%;
+    --color-card-foreground: 0 0% 98%;
+    --color-muted: 240 5% 15%;
+    --color-muted-foreground: 240 5% 64.9%;
+    --color-primary: 263 100% 65%;
+    --color-primary-foreground: 0 0% 100%;
+    --color-secondary: 191 100% 50%;
+    --color-secondary-foreground: 0 0% 0%;
+    --color-accent: 326 100% 50%;
+    --color-accent-foreground: 0 0% 100%;
+    --color-border: 240 5% 20%;
+    --color-input: 240 5% 20%;
+    --color-ring: 263 100% 65%;
+
+    /* Gradient colors */
+    --gradient-from: 263 100% 65%;
+    --gradient-via: 191 100% 50%;
+    --gradient-to: 326 100% 50%;
+
+    /* Glass effect */
+    --glass-bg: rgba(15, 17, 24, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+
+    /* Neon glow */
+    --neon-purple: 263 100% 65%;
+    --neon-cyan: 191 100% 50%;
+    --neon-pink: 326 100% 50%;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg,
+    hsl(var(--color-background)) 0%,
+    hsl(240 10% 8%) 50%,
+    hsl(240 10% 5%) 100%
+  );
+  background-attachment: fixed;
+  color: hsl(var(--color-foreground));
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+/* Animated background grid */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Floating gradient orbs */
+body::after {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+  animation: float 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(30px, -30px) rotate(120deg); }
+  66% { transform: translate(-20px, 20px) rotate(240deg); }
+}
+
+/* Glass morphism utility */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+}
+
+/* Neon glow effects */
+.neon-glow-purple {
+  box-shadow:
+    0 0 20px rgba(139, 92, 246, 0.3),
+    0 0 40px rgba(139, 92, 246, 0.2),
+    0 0 60px rgba(139, 92, 246, 0.1);
+}
+
+.neon-glow-cyan {
+  box-shadow:
+    0 0 20px rgba(6, 182, 212, 0.3),
+    0 0 40px rgba(6, 182, 212, 0.2),
+    0 0 60px rgba(6, 182, 212, 0.1);
+}
+
+.neon-border {
+  position: relative;
+}
+
+.neon-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    hsl(var(--neon-purple)) 0%,
+    hsl(var(--neon-cyan)) 50%,
+    hsl(var(--neon-pink)) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+@keyframes neon-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg,
+    hsl(var(--neon-purple)) 0%,
+    hsl(var(--neon-cyan)) 50%,
+    hsl(var(--neon-pink)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--color-background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--neon-purple)),
+    hsl(var(--neon-cyan))
+  );
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--neon-cyan)),
+    hsl(var(--neon-pink))
+  );
+}
+
+/* TipTap Editor Styles */
+.tiptap {
+  outline: none;
+  caret-color: hsl(var(--neon-cyan));
+  min-height: 100%;
+  color: hsl(var(--color-foreground));
+}
+
+.tiptap.ProseMirror {
+  padding: 2rem 3rem;
+  min-height: calc(100vh - 200px);
+}
+
+/* Fix for disappearing text - ensure proper rendering */
+.tiptap * {
+  caret-color: hsl(var(--neon-cyan));
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: hsl(var(--color-muted-foreground));
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.tiptap h1, .tiptap h2, .tiptap h3 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tiptap h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(135deg,
+    hsl(var(--neon-purple)),
+    hsl(var(--neon-cyan))
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.tiptap h2 {
+  font-size: 2rem;
+  color: hsl(var(--neon-cyan));
+  font-weight: 700;
+}
+
+.tiptap h3 {
+  font-size: 1.5rem;
+  color: hsl(var(--color-foreground));
+  font-weight: 600;
+}
+
+.tiptap p {
+  margin-bottom: 1rem;
+  line-height: 1.8;
+  color: hsl(var(--color-foreground));
+  min-height: 1.5rem;
+}
+
+.tiptap strong {
+  color: hsl(var(--neon-purple));
+  font-weight: 700;
+}
+
+.tiptap em {
+  color: hsl(var(--neon-cyan));
+  font-style: italic;
+}
+
+.tiptap code {
+  background: hsl(var(--color-muted));
+  color: hsl(var(--neon-pink));
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9em;
+}
+
+.tiptap ul,
+.tiptap ol {
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.tiptap ul {
+  list-style-type: disc;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+}
+
+.tiptap li {
+  margin: 0.25rem 0;
+  color: hsl(var(--color-foreground));
+}
+
+.tiptap li p {
+  margin: 0;
+}
+
+.tiptap blockquote {
+  border-left: 3px solid hsl(var(--neon-purple));
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: hsl(var(--color-muted-foreground));
+}
+
+.tiptap hr {
+  border: none;
+  border-top: 2px solid hsl(var(--color-border));
+  margin: 2rem 0;
+  background: linear-gradient(90deg,
+    transparent,
+    hsl(var(--neon-purple)),
+    hsl(var(--neon-cyan)),
+    transparent
+  );
+  height: 2px;
+}
+
+.tiptap a {
+  color: hsl(var(--neon-cyan));
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tiptap a:hover {
+  color: hsl(var(--neon-purple));
+}
+
+/* Selection styling - CRITICAL for text selection */
+/* Hide default browser selection when we have active-selection */
+.tiptap.has-active-selection ::selection,
+.tiptap.has-active-selection::selection {
+  background: transparent;
+  color: inherit;
+}
+
+.tiptap.has-active-selection ::-moz-selection,
+.tiptap.has-active-selection::-moz-selection {
+  background: transparent;
+  color: inherit;
+}
+
+/* Normal browser selection (when no active selection) */
+.tiptap ::selection,
+.tiptap::selection {
+  background: rgba(6, 182, 212, 0.3);
+  color: white;
+}
+
+.tiptap ::-moz-selection,
+.tiptap::-moz-selection {
+  background: rgba(6, 182, 212, 0.3);
+  color: white;
+}
+
+/* Global selection */
+::selection {
+  background: rgba(6, 182, 212, 0.3);
+  color: white;
+}
+
+::-moz-selection {
+  background: rgba(6, 182, 212, 0.3);
+  color: white;
+}
+
+/* Persistent selection highlight - shown when text is selected for AI processing */
+/* Single color, no overlap */
+.tiptap .active-selection {
+  background: rgba(6, 182, 212, 0.25) !important;
+  border-bottom: 2px solid rgba(6, 182, 212, 0.6);
+  border-radius: 0px;
+  padding: 1px 0px;
+  color: rgb(165, 243, 252) !important;
+  transition: all 0.2s ease;
+}
+
+/* No ProseMirror selected node styling to avoid overlap */
+.ProseMirror-selectednode {
+  outline: none !important;
+}
+
+/* Ensure text is always visible and selectable */
+.tiptap,
+.tiptap * {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+}
+
+/* Fix for focus */
+.tiptap:focus {
+  outline: none;
+}
+
+/* Ensure content is rendered properly */
+.ProseMirror {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  white-space: break-spaces;
+}
+
+.ProseMirror-focused {
+  outline: none;
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Loading animation */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 92, 246, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* AI Suggestion Decorations - CRITICAL for inline diff view */
+.tiptap [data-suggestion-type="remove"] {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  color: rgb(252, 165, 165) !important;
+  text-decoration: line-through !important;
+  text-decoration-color: rgb(239, 68, 68) !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
+  position: relative !important;
+}
+
+.tiptap [data-suggestion-type="add"] {
+  background-color: rgba(34, 197, 94, 0.2) !important;
+  color: rgb(134, 239, 172) !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
+  margin: 0 2px !important;
+  display: inline-block !important;
+  position: relative !important;
+}
+
+/* Ensure decorations are visible over everything */
+.tiptap span[data-suggestion-id] {
+  z-index: 10 !important;
+  position: relative !important;
+}
+
+/* Grammarly-style suggestion underlines - WRITING OPTIMIZED */
+.tiptap .suggestion-underline {
+  background-image: linear-gradient(
+    to right,
+    rgb(239, 68, 68) 0%,
+    rgb(239, 68, 68) 50%,
+    transparent 50%,
+    transparent 100%
+  );
+  background-size: 6px 2px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  padding-bottom: 2px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.tiptap .suggestion-underline:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-radius: 2px;
+}
+
+/* Active/clicked suggestion */
+.tiptap .suggestion-underline:active {
+  background-color: rgba(239, 68, 68, 0.15);
+}
