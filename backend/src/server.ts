@@ -74,24 +74,27 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   });
 });
 
-app.listen(PORT, () => {
-  console.log('');
-  console.log('╔═══════════════════════════════════════════════════════╗');
-  console.log('║                                                       ║');
-  console.log('║          🚀  UltraWrite API Server  🚀                ║');
-  console.log('║                                                       ║');
-  console.log('╠═══════════════════════════════════════════════════════╣');
-  console.log(`║  Server:        http://localhost:${PORT}                    ║`);
-  console.log(`║  Health Check:  http://localhost:${PORT}/health            ║`);
-  console.log('║                                                       ║');
-  console.log('║  📝 Documents API:  /api/documents                    ║');
-  console.log('║  🤖 AI API:         /api/ai                           ║');
-  console.log('║  🎯 Agent Mode API: /api/agent                        ║');
-  console.log('║  💬 Chat API:       /api/chat                         ║');
-  console.log('║                                                       ║');
-  console.log('╚═══════════════════════════════════════════════════════╝');
-  console.log('');
-});
+// Only start the server if running locally (not in Vercel serverless)
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log('');
+    console.log('╔═══════════════════════════════════════════════════════╗');
+    console.log('║                                                       ║');
+    console.log('║          🚀  UltraWrite API Server  🚀                ║');
+    console.log('║                                                       ║');
+    console.log('╠═══════════════════════════════════════════════════════╣');
+    console.log(`║  Server:        http://localhost:${PORT}                    ║`);
+    console.log(`║  Health Check:  http://localhost:${PORT}/health            ║`);
+    console.log('║                                                       ║');
+    console.log('║  📝 Documents API:  /api/documents                    ║');
+    console.log('║  🤖 AI API:         /api/ai                           ║');
+    console.log('║  🎯 Agent Mode API: /api/agent                        ║');
+    console.log('║  💬 Chat API:       /api/chat                         ║');
+    console.log('║                                                       ║');
+    console.log('╚═══════════════════════════════════════════════════════╝');
+    console.log('');
+  });
+}
 
 export default app;
 
