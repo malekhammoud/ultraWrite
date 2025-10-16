@@ -6,7 +6,6 @@ import { EditorToolbar } from './EditorToolbar';
 import { InlineSuggestionControls } from './InlineSuggestionControls';
 import { SuggestionCard } from './SuggestionCard';
 import { AISidebar } from '../AISidebar/AISidebar';
-import { ChatSidebar } from '../Chat/ChatSidebar';
 import { EditorProvider } from '@/contexts/EditorContext';
 import { SuggestionMark } from '@/extensions/SuggestionMark';
 import { SelectionHighlight } from '@/extensions/SelectionHighlight';
@@ -289,9 +288,6 @@ export function EditorPane() {
 
         {/* Right sidebar for AI interactions */}
         <AISidebar onSuggestionsChange={setSuggestions} />
-
-        {/* Chat sidebar */}
-        <ChatSidebar />
       </div>
     </EditorProvider>
   );

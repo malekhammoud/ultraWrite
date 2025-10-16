@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Loader2, Sparkles, Bot, RefreshCw, ChevronRight, Target, Plus, Trash2, PlayCircle, ClipboardList, History, MessageSquare, ChevronDown, Check, CheckCircle2, Command } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { cn } from '@/lib/utils';
 import { useAISidebarStore } from '@/store/aiSidebarStore';
 import { useAIFeedbackStore } from '@/store/aiFeedbackStore';
@@ -613,48 +615,14 @@ export function AISidebar({ onSuggestionsChange }: AISidebarProps) {
         </div>
       </div>
 
-      {currentMode || selectedMode === 'chat' || selectedMode === 'grammar' ? (
+      {currentMode ? (
         <>
 
           {/* Content */}
           <div className="flex-1 overflow-hidden flex flex-col">
             {/* Universal tabs for all modes - only show if not in chat-only mode */}
-            {selectedMode !== 'chat' && (
+            {selectedMode == 'evaluate' && (
               <div className="p-4 pb-0">
-                <div className="flex gap-2 p-1 bg-white/5 rounded-lg">
-                  <button
-                    onClick={() => setActiveTab('main')}
-                    className={cn(
-                      'flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2',
-                      activeTab === 'main'
-                        ? cn(
-                            'text-white',
-                            currentMode === 'grammar' && 'bg-green-500/20',
-                            currentMode === 'agent' && 'bg-pink-500/20',
-                            currentMode === 'rewrite' && 'bg-purple-500/20',
-                            currentMode === 'expand' && 'bg-cyan-500/20',
-                            currentMode === 'evaluate' && 'bg-orange-500/20'
-                          )
-                        : 'text-gray-400 hover:text-gray-300'
-                    )}
-                  >
-                    <Icon className="w-4 h-4" />
-                    {config?.title}
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('chat')}
-                    className={cn(
-                      'flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2',
-                      activeTab === 'chat'
-                        ? 'bg-blue-500/20 text-blue-300'
-                        : 'text-gray-400 hover:text-gray-300'
-                    )}
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                    Chat {messages.length > 0 && `(${messages.length})`}
-                  </button>
-                </div>
-
                 {/* Nested tabs for evaluate mode when on main tab */}
                 {currentMode === 'evaluate' && activeTab === 'main' && (
                 <div className="flex gap-2 p-1 bg-white/5 rounded-lg mt-2">
@@ -1043,7 +1011,60 @@ export function AISidebar({ onSuggestionsChange }: AISidebarProps) {
                                     : 'bg-white/5 text-gray-200 border border-white/10'
                                 )}
                               >
-                                <p className="whitespace-pre-wrap">{message.content}</p>
+                                {message.role === 'user' ? (
+                                  <p className="whitespace-pre-wrap">{message.content}</p>
+                                ) : (
+                                  <div className="prose prose-invert prose-sm max-w-none">
+                                    <ReactMarkdown
+                                      remarkPlugins={[remarkGfm]}
+                                      components={{
+                                        p: ({ children }) => <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>,
+                                        ul: ({ children }) => <ul className="mb-3 last:mb-0 space-y-1.5 ml-4 pl-6 list-disc marker:text-blue-400">{children}</ul>,
+                                        ol: ({ children }) => <ol className="mb-3 last:mb-0 space-y-1.5 ml-4 pl-6 list-decimal marker:text-blue-400">{children}</ol>,
+                                        li: ({ children }) => <li className="pl-2 leading-relaxed">{children}</li>,
+                                        code: ({ inline, children }: any) =>
+                                          inline ? (
+                                            <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs font-mono text-blue-300">
+                                              {children}
+                                            </code>
+                                          ) : (
+                                            <code className="block bg-black/30 p-3 rounded text-xs font-mono overflow-x-auto my-3 leading-relaxed">
+                                              {children}
+                                            </code>
+                                          ),
+                                        pre: ({ children }) => <pre className="bg-black/30 p-3 rounded overflow-x-auto my-3">{children}</pre>,
+                                        strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>,
+                                        em: ({ children }) => <em className="italic">{children}</em>,
+                                        h1: ({ children }) => <h1 className="text-lg font-bold mb-3 mt-4 first:mt-0 text-white">{children}</h1>,
+                                        h2: ({ children }) => <h2 className="text-base font-bold mb-2.5 mt-3 first:mt-0 text-white">{children}</h2>,
+                                        h3: ({ children }) => <h3 className="text-sm font-bold mb-2 mt-2.5 first:mt-0 text-white">{children}</h3>,
+                                        blockquote: ({ children }) => (
+                                          <blockquote className="border-l-2 border-blue-400 pl-4 py-0.5 italic text-gray-300 my-3">
+                                            {children}
+                                          </blockquote>
+                                        ),
+                                        a: ({ href, children }) => (
+                                          <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">
+                                            {children}
+                                          </a>
+                                        ),
+                                        hr: () => <hr className="my-4 border-t border-white/20" />,
+                                        table: ({ children }) => (
+                                          <div className="overflow-x-auto my-3">
+                                            <table className="min-w-full divide-y divide-white/20">{children}</table>
+                                          </div>
+                                        ),
+                                        thead: ({ children }) => <thead className="bg-white/5">{children}</thead>,
+                                        tbody: ({ children }) => <tbody className="divide-y divide-white/10">{children}</tbody>,
+                                        tr: ({ children }) => <tr>{children}</tr>,
+                                        th: ({ children }) => <th className="px-3 py-2 text-left text-xs font-semibold text-white">{children}</th>,
+                                        td: ({ children }) => <td className="px-3 py-2 text-xs text-gray-300">{children}</td>,
+                                      }}
+                                    >
+                                      {message.content}
+                                    </ReactMarkdown>
+                                  </div>
+                                )}
                                 <p className="text-xs opacity-50 mt-1">
                                   {new Date(message.timestamp).toLocaleTimeString()}
                                 </p>

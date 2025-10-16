@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import documentsRouter from './routes/documents.js';
 import aiRouter from './routes/ai.js';
 import agentRouter from './routes/agent.js';
+import chatRouter from './routes/chat.js';
 
 dotenv.config();
 
@@ -38,6 +39,7 @@ app.get('/health', (req, res) => {
 app.use('/api/documents', documentsRouter);
 app.use('/api/ai', aiRouter);
 app.use('/api/agent', agentRouter);
+app.use('/api/chat', chatRouter);
 
 // 404 handler
 app.use((req, res) => {
@@ -69,6 +71,7 @@ app.listen(PORT, () => {
   console.log('║  📝 Documents API:  /api/documents                    ║');
   console.log('║  🤖 AI API:         /api/ai                           ║');
   console.log('║  🎯 Agent Mode API: /api/agent                        ║');
+  console.log('║  💬 Chat API:       /api/chat                         ║');
   console.log('║                                                       ║');
   console.log('╚═══════════════════════════════════════════════════════╝');
   console.log('');

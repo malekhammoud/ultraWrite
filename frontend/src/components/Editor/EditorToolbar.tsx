@@ -1,19 +1,16 @@
 import { useEditor } from '@tiptap/react';
 import {
   Bold, Italic, Heading1, Heading2, Heading3, List, ListOrdered,
-  Undo, Redo, Code, Quote, Minus, FileText, MessageSquare
+  Undo, Redo, Code, Quote, Minus, FileText
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { useChatStore } from '@/store/chatStore';
 
 interface EditorToolbarProps {
   editor: ReturnType<typeof useEditor>;
 }
 
 export function EditorToolbar({ editor }: EditorToolbarProps) {
-  const { isOpen: isChatOpen, setOpen: setChatOpen } = useChatStore();
-
   if (!editor) {
     return null;
   }
@@ -199,15 +196,6 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
 
       <Separator />
 
-      {/* Chat button */}
-      <div className="flex items-center gap-1 px-2">
-        <ToolbarButton
-          onClick={() => setChatOpen(!isChatOpen)}
-          isActive={isChatOpen}
-          icon={MessageSquare}
-          label="Chat with Document"
-        />
-      </div>
     </motion.div>
   );
 }
