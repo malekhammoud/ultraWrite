@@ -6,14 +6,10 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/health",
-      "dest": "dist/index.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "dist/index.js"
+      "source": "/(.*)",
+      "destination": "dist/index.js"
     }
   ],
   "env": {
@@ -21,7 +17,7 @@
   },
   "headers": [
     {
-      "source": "/api/(.*)",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "Access-Control-Allow-Credentials",
