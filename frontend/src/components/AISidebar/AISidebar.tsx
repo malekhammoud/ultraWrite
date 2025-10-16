@@ -161,6 +161,9 @@ export function AISidebar({ onSuggestionsChange }: AISidebarProps) {
   useEffect(() => {
     if (['grammar', 'agent', 'rewrite', 'expand', 'evaluate'].includes(selectedMode)) {
       setMode(selectedMode as 'agent' | 'rewrite' | 'expand' | 'evaluate');
+    } else if (selectedMode === 'chat') {
+      // Switch to chat tab when chat mode is selected
+      setActiveTab('chat');
     }
   }, [selectedMode, setMode]);
 
@@ -550,6 +553,11 @@ export function AISidebar({ onSuggestionsChange }: AISidebarProps) {
                         key={mode.id}
                         onClick={() => {
                           setSelectedMode(mode.id);
+                          if (mode.id === 'chat') {
+                            setActiveTab('chat');
+                          } else {
+                            setActiveTab('main');
+                          }
                           setIsDropdownOpen(false);
                         }}
                         whileHover={{ x: 4 }}
@@ -605,48 +613,50 @@ export function AISidebar({ onSuggestionsChange }: AISidebarProps) {
         </div>
       </div>
 
-      {currentMode || selectedMode === 'chat' ? (
+      {currentMode || selectedMode === 'chat' || selectedMode === 'grammar' ? (
         <>
 
           {/* Content */}
           <div className="flex-1 overflow-hidden flex flex-col">
-            {/* Universal tabs for all modes */}
-            <div className="p-4 pb-0">
-              <div className="flex gap-2 p-1 bg-white/5 rounded-lg">
-                <button
-                  onClick={() => setActiveTab('main')}
-                  className={cn(
-                    'flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2',
-                    activeTab === 'main'
-                      ? cn(
-                          'text-white',
-                          currentMode === 'agent' && 'bg-pink-500/20',
-                          currentMode === 'rewrite' && 'bg-purple-500/20',
-                          currentMode === 'expand' && 'bg-cyan-500/20',
-                          currentMode === 'evaluate' && 'bg-green-500/20'
-                        )
-                      : 'text-gray-400 hover:text-gray-300'
-                  )}
-                >
-                  <Icon className="w-4 h-4" />
-                  {config?.title}
-                </button>
-                <button
-                  onClick={() => setActiveTab('chat')}
-                  className={cn(
-                    'flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2',
-                    activeTab === 'chat'
-                      ? 'bg-blue-500/20 text-blue-300'
-                      : 'text-gray-400 hover:text-gray-300'
-                  )}
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  Chat {messages.length > 0 && `(${messages.length})`}
-                </button>
-              </div>
+            {/* Universal tabs for all modes - only show if not in chat-only mode */}
+            {selectedMode !== 'chat' && (
+              <div className="p-4 pb-0">
+                <div className="flex gap-2 p-1 bg-white/5 rounded-lg">
+                  <button
+                    onClick={() => setActiveTab('main')}
+                    className={cn(
+                      'flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2',
+                      activeTab === 'main'
+                        ? cn(
+                            'text-white',
+                            currentMode === 'grammar' && 'bg-green-500/20',
+                            currentMode === 'agent' && 'bg-pink-500/20',
+                            currentMode === 'rewrite' && 'bg-purple-500/20',
+                            currentMode === 'expand' && 'bg-cyan-500/20',
+                            currentMode === 'evaluate' && 'bg-orange-500/20'
+                          )
+                        : 'text-gray-400 hover:text-gray-300'
+                    )}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {config?.title}
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('chat')}
+                    className={cn(
+                      'flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2',
+                      activeTab === 'chat'
+                        ? 'bg-blue-500/20 text-blue-300'
+                        : 'text-gray-400 hover:text-gray-300'
+                    )}
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    Chat {messages.length > 0 && `(${messages.length})`}
+                  </button>
+                </div>
 
-              {/* Nested tabs for evaluate mode when on main tab */}
-              {currentMode === 'evaluate' && activeTab === 'main' && (
+                {/* Nested tabs for evaluate mode when on main tab */}
+                {currentMode === 'evaluate' && activeTab === 'main' && (
                 <div className="flex gap-2 p-1 bg-white/5 rounded-lg mt-2">
                   <button
                     onClick={() => setEvaluateTab('rubrics')}
@@ -673,8 +683,9 @@ export function AISidebar({ onSuggestionsChange }: AISidebarProps) {
                     Results ({evaluationResults.length})
                   </button>
                 </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
 
             <div className="flex-1 overflow-y-auto p-4">
               <div className="space-y-4">

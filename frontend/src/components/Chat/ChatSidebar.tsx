@@ -146,16 +146,11 @@ export function ChatSidebar() {
           className="w-96 glass border-l border-white/10 flex flex-col h-screen"
         >
           {/* Header */}
-          <div className="p-4 border-b border-white/10 bg-gradient-to-r from-blue-500 to-cyan-500">
+          <div className="p-4 border-b border-white/10 bg-black/20">
             <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
-                  <MessageSquare className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-white">Chat</h2>
-                  <p className="text-xs text-white/70">Ask about your document</p>
-                </div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-base font-semibold text-white">Chat</h2>
+                <span className="text-xs text-gray-400">Ask about your document</span>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -190,7 +185,7 @@ export function ChatSidebar() {
                 exit={{ height: 0, opacity: 0 }}
                 className="mt-3 pt-3 border-t border-white/20"
               >
-                <p className="text-xs text-white/80 mb-2 font-medium">Include in context:</p>
+                <p className="text-xs text-gray-300 mb-2 font-medium">Include in context:</p>
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -199,8 +194,8 @@ export function ChatSidebar() {
                       onChange={(e) => setIncludeFullDocument(e.target.checked)}
                       className="w-4 h-4 rounded border-white/30 bg-white/10 checked:bg-white"
                     />
-                    <FileText className="w-3 h-3 text-white/80" />
-                    <span className="text-xs text-white">Full document</span>
+                    <FileText className="w-3 h-3 text-gray-400" />
+                    <span className="text-xs text-gray-300">Full document</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -209,8 +204,8 @@ export function ChatSidebar() {
                       onChange={(e) => setIncludeSelection(e.target.checked)}
                       className="w-4 h-4 rounded border-white/30 bg-white/10 checked:bg-white"
                     />
-                    <Type className="w-3 h-3 text-white/80" />
-                    <span className="text-xs text-white">Selected text</span>
+                    <Type className="w-3 h-3 text-gray-400" />
+                    <span className="text-xs text-gray-300">Selected text</span>
                   </label>
                 </div>
               </motion.div>
